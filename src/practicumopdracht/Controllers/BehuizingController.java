@@ -8,6 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.stage.Stage;
 import practicumopdracht.Comparators.BehuizingComparatorAZ;
 import practicumopdracht.MainApplication;
 import practicumopdracht.Models.Behuizing;
@@ -39,7 +40,7 @@ public class BehuizingController extends Controller {
         List<Behuizing> behuizingen = MainApplication.getBehuizingDAO().getAll();
         ObservableList<Behuizing> behuizingenObservableList = FXCollections.observableList(behuizingen);
         view.getListViewBehuizing().setItems(behuizingenObservableList);
-
+        FXCollections.sort(view.getListViewBehuizing().getItems(), new BehuizingComparatorAZ());
     }
 
 
@@ -50,7 +51,7 @@ public class BehuizingController extends Controller {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.getButtonTypes().clear();
         alert.getButtonTypes().addAll(yes, no);
-        alert.setTitle("U bent op het punt om op te slaan.");
+        alert.setTitle("Oplsaan");
         alert.setHeaderText("Weet u zeker dat u wilt opslaan?");
         alert.showAndWait();
 
@@ -59,14 +60,14 @@ public class BehuizingController extends Controller {
                 Alert alert2 = new Alert(Alert.AlertType.INFORMATION );
                 alert2.getButtonTypes().clear();
                 alert2.getButtonTypes().addAll(oke);
-                alert2.setTitle("Succesvol opgeslagen!");
-                alert2.setHeaderText("Het opslaan is gelukt.");
+                alert2.setTitle("Opslaan");
+                alert2.setHeaderText("Het opslaan is succesvol gelukt.");
                 alert2.showAndWait();
             } else {
                 Alert alert3 = new Alert(Alert.AlertType.ERROR);
                 alert3.getButtonTypes().clear();
                 alert3.getButtonTypes().addAll(oke);
-                alert3.setTitle("Opslaan mislukt!");
+                alert3.setTitle("Opslaan");
                 alert3.setHeaderText("Het opslaan is helaas mislukt.");
                 alert3.showAndWait();
             }
@@ -80,26 +81,20 @@ public class BehuizingController extends Controller {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.getButtonTypes().clear();
         alert.getButtonTypes().addAll(yes, no);
-        alert.setTitle("U bent op het punt om te laden.");
+        alert.setTitle("Laden");
         alert.setHeaderText("Weet u zeker dat u wilt laden?");
         alert.showAndWait();
 
         if (alert.getResult() == yes) {
-            if (MainApplication.getBehuizingDAO().load()) {
-                Alert alert2 = new Alert(Alert.AlertType.INFORMATION );
-                alert2.getButtonTypes().clear();
-                alert2.getButtonTypes().addAll(oke);
-                alert2.setTitle("Succesvol geladen!");
-                alert2.setHeaderText("Het laden is gelukt.");
-                alert2.showAndWait();
-            } else {
-                Alert alert3 = new Alert(Alert.AlertType.ERROR);
-                alert3.getButtonTypes().clear();
-                alert3.getButtonTypes().addAll(oke);
-                alert3.setTitle("Laden mislukt!");
-                alert3.setHeaderText("Het laden is helaas mislukt.");
-                alert3.showAndWait();
-            }
+            MainApplication.getBehuizingDAO().load();
+            MainApplication.getComponentDAO().load();
+            view.getListViewBehuizing().refresh();
+            Alert alert2 = new Alert(Alert.AlertType.INFORMATION );
+            alert2.getButtonTypes().clear();
+            alert2.getButtonTypes().addAll(oke);
+            alert2.setTitle("Laden");
+            alert2.setHeaderText("Het laden is gelukt.");
+            alert2.showAndWait();
 
             List<Behuizing> behuizingen = MainApplication.getBehuizingDAO().getAll();
             ObservableList<Behuizing> behuizingenObservableList = FXCollections.observableList(behuizingen);
@@ -111,25 +106,37 @@ public class BehuizingController extends Controller {
 
         ButtonType yes = new ButtonType("Ja");
         ButtonType no = new ButtonType("Nee");
-        ButtonType oke = new ButtonType("Oke");
-        Alert alert = new Alert(Alert.AlertType.NONE);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.getButtonTypes().clear();
         alert.getButtonTypes().addAll(yes, no);
-        alert.setTitle("U bent op het punt om af te sluiten.");
+        alert.setTitle("Afsluiten");
         alert.setHeaderText("Weet u zeker dat u wilt afsluiten?");
         alert.showAndWait();
-
         if (alert.getResult() == yes) {
-            if (MainApplication.getBehuizingDAO().save()) {
-                Alert alert2 = new Alert(Alert.AlertType.INFORMATION );
-                alert2.getButtonTypes().clear();
-                alert2.getButtonTypes().addAll(oke);
-                alert2.setTitle("Succesvol opgeslagen!");
-                alert2.setHeaderText("Alle gegevens zijn opgeslagen op de achtergrond.");
-                alert2.showAndWait();
+            Alert alert1 = new Alert(Alert.AlertType.CONFIRMATION);
+            alert1.getButtonTypes().clear();
+            alert1.getButtonTypes().addAll(yes, no);
+            alert1.setTitle("Afsluiten");
+            alert1.setHeaderText("Wilt u nog opslaan?");
+            alert1.showAndWait();
+
+            if (alert1.getResult() == no) {
+                Stage stage = (Stage) view.getRoot().getScene().getWindow();
+                stage.close();
             }
+
+            if (alert1.getResult() == yes) {
+                MainApplication.getBehuizingDAO().save();
+                MainApplication.getComponentDAO().save();
+            }
+
         }
-        System.exit(0);
+
+        if (alert.getResult() == no) {
+            return;
+        }
+        Stage stage = (Stage) view.getRoot().getScene().getWindow();
+        stage.close();
     }
 
     private void menuOplopend() {
@@ -143,7 +150,6 @@ public class BehuizingController extends Controller {
 //    ------------------------------------------------------------------------------------------------------------------
 
     private void viewOpslaan() {
-
         String merkenTextField = view.getMerkenTextField().getText();
         String hoogteBehuizingTextField = view.getHoogteBehuizingTextField().getText();
         String serienummerBehuizingTextField = view.getSerienummerBehuizingText().getText();
@@ -225,7 +231,7 @@ public class BehuizingController extends Controller {
             alert.getButtonTypes().clear();
             alert.getButtonTypes().addAll(oke);
             alert.setContentText(behuizing.toString());
-            alert.setTitle("Nieuwe behuizing");
+            alert.setTitle("Nieuwe behuizing!");
             alert.setHeaderText("Het is je gelukt om een nieuwe behuizing toe te voegen.");
             alert.showAndWait();
 
@@ -244,7 +250,7 @@ public class BehuizingController extends Controller {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.getButtonTypes().clear();
         alert.getButtonTypes().addAll(yes, no);
-        alert.setTitle("Nieuwe velden");
+        alert.setTitle("Nieuwe velden!");
         alert.setHeaderText("Weet je zeker dat je nieuwe velden wilt toevoegen?");
         alert.showAndWait();
 

@@ -217,7 +217,6 @@ public class BehuizingView extends View {
     }
 
 
-
 //      MENUBAR --------------------------------------------------------------------------------------------------------
     public MenuItem getOpslaanMenuItem() {
         return opslaanMenuItem;
@@ -238,7 +237,6 @@ public class BehuizingView extends View {
     public MenuItem getAflopendMenuItem() {
         return aflopendMenuItem;
     }
-//      MENUBAR --------------------------------------------------------------------------------------------------------
 
 //      VIEW -----------------------------------------------------------------------------------------------------------
     public TextField getMerkenTextField() {
@@ -284,7 +282,6 @@ public class BehuizingView extends View {
     public Parent getRoot() {
         return root;
     }
-//      VIEW -----------------------------------------------------------------------------------------------------------
 
 }
 

@@ -6,11 +6,11 @@ import java.io.*;
 
 public class BinaryBehuizingDAO extends BehuizingDAO {
 
-    static final String BINARYBEHUIZING = "Behuizing.bin";
+//    static final String BINARY_BEHUIZING = "Behuizing.bn";
 
     @Override
     public boolean save() {
-        File file = new File(BINARYBEHUIZING);
+        File file = new File("Behuizing.bin");
         try (
                 FileOutputStream fileOutputStream = new FileOutputStream(file);
                 DataOutputStream dataOutputStream = new DataOutputStream(fileOutputStream)
@@ -21,7 +21,7 @@ public class BinaryBehuizingDAO extends BehuizingDAO {
                 dataOutputStream.writeUTF(behuizing.getSoort());
                 dataOutputStream.writeDouble(behuizing.getHoogte());
                 dataOutputStream.writeInt(behuizing.getSerieNummer());
-                dataOutputStream.writeUTF(String.valueOf(behuizing.heeftBehuizingTemperedGlass()));
+                dataOutputStream.writeBoolean(behuizing.heeftBehuizingTemperedGlass());
             }
 
         } catch (Exception ex) {
@@ -32,8 +32,8 @@ public class BinaryBehuizingDAO extends BehuizingDAO {
 
     @Override
     public boolean load() {
-        behuizingen.clear();
-        File file = new File(BINARYBEHUIZING);
+//        behuizingen.clear();
+        File file = new File("Behuizing.bin");
 
         try (
                 FileInputStream fileInputStream = new FileInputStream(file);
@@ -51,10 +51,10 @@ public class BinaryBehuizingDAO extends BehuizingDAO {
                 behuizingen.add(behuizing);
             }
 
-            return true;
+//            return true;
         }
         catch (FileNotFoundException e) {
-            System.err.println(BINARYBEHUIZING + " is niet gevonden!");
+            System.err.println("bestand is niet gevonden!");
         }
         catch (Exception e) {
             e.printStackTrace();

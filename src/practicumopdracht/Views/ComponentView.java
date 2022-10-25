@@ -202,6 +202,8 @@ public class ComponentView extends View {
 
     }
 
+
+//      RADIOBAR -------------------------------------------------------------------------------------------------------
     public RadioButton getComponentAZknop() {
         return componentAZknop;
     }
@@ -222,6 +224,7 @@ public class ComponentView extends View {
         return sorterenGroep;
     }
 
+//      VIEW -----------------------------------------------------------------------------------------------------------
     public ComboBox<Behuizing> getBehuizingen() {
         return behuizingen;
     }

@@ -9,6 +9,7 @@ import practicumopdracht.Data.*;
 
 public class MainApplication extends Application {
 
+    private final String TITLE = String.format("Practicumopdracht OOP2 - %s", Main.studentNaam);
     private final int WIDTH = 640;
     private final int HEIGHT = 480;
     private static BehuizingDAO behuizingDAO;
@@ -19,7 +20,7 @@ public class MainApplication extends Application {
     public void start(Stage stage) {
         MainApplication.stage = stage;
 
-        stage.setTitle(String.format("Practicumopdracht OOP2 - %s", Main.studentNaam));
+        stage.setTitle(TITLE);
         stage.setWidth(WIDTH);
         stage.setHeight(HEIGHT);
 
@@ -30,8 +31,8 @@ public class MainApplication extends Application {
 //        componentDAO = new TextComponentDAO();
         componentDAO = new ObjectComponentDAO();
 
-        behuizingDAO.load();
-        componentDAO.load();
+//        behuizingDAO.load();
+//        componentDAO.load();
 
         switchController(new BehuizingController());
     }
