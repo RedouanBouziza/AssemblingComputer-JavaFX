@@ -2,8 +2,7 @@
  * @Author: Redouan Bouziza IS205
  * Detail model
  */
-
-package practicumopdracht.models;
+package practicumopdracht.Models;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -58,7 +57,7 @@ public class Component implements Serializable {
      * @return toString
      */
     public String toString() {
-        return String.format("\nNaam: %s\nDatum: %s",
+        return String.format("Naam: %s\nDatum: %s",
                 naam,
                 datum);
     }

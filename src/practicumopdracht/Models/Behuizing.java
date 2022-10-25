@@ -2,8 +2,7 @@
  * @Author: Redouan Bouziza IS205
  * Master model
  */
-
-package practicumopdracht.models;
+package practicumopdracht.Models;
 
 import java.io.Serializable;
 
@@ -69,7 +68,7 @@ public class Behuizing implements Serializable {
      * @return toString
      */
     public String toString() {
-        return String.format("\nSoort: %s\nHoogte: %3.2f\nSerie nummer: %d\nBehuizing heeft tempered glass: %s",
+        return String.format("Merk: %s\nHoogte: %3.2f\nSerienummer: %d\nBehuizing heeft tempered glass: %s",
                 soort,
                 hoogte,
                 serieNummer,
