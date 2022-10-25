@@ -17,6 +17,12 @@ import javafx.scene.layout.VBox;
 
 public class ComponentView extends View {
 
+    private RadioButton componentAZknop;
+    private RadioButton componentZAknop;
+    private RadioButton componentDatumLaagNaarHoogknop;
+    private RadioButton componentDatumHoogNaarLaagknop;
+    private ToggleGroup sorterenGroep;
+
     private ComboBox<Behuizing> behuizingen;
     private TextField componentNaamTextField;
     private DatePicker datumGarantieComponent;
@@ -33,7 +39,7 @@ public class ComponentView extends View {
 
     private void screenView() {
 
-        //      SELECTEER-BEHUIZING --------------------------------------------------------------------------------------------
+//      SELECTEER-BEHUIZING --------------------------------------------------------------------------------------------
         Label selecteerBehuizingLabel = new Label("Selecteer behuizing: ");
         VBox selecteerBehuizingLinks = new VBox();
         selecteerBehuizingLinks.getChildren().add(selecteerBehuizingLabel);
@@ -82,6 +88,7 @@ public class ComponentView extends View {
 
         datumGarantieComponent = new DatePicker();
         datumGarantieComponent.setMinWidth(445);
+
         VBox datumGarantieComponentRechts = new VBox();
         datumGarantieComponentRechts.getChildren().add(datumGarantieComponent);
 
@@ -89,6 +96,38 @@ public class ComponentView extends View {
         garantieDatum.getChildren().addAll(garantieDatumLabelLinks, datumGarantieComponentRechts);
         garantieDatum.setPadding(new Insets(0,0,10,0));
 //      GARANTIE-DATUM -------------------------------------------------------------------------------------------------
+
+
+//      VIER-KNOPPEN ---------------------------------------------------------------------------------------------------
+        Label sorteren = new Label("Sorteren: ");
+        VBox sorterenlinks = new VBox();
+        sorterenlinks.getChildren().add(sorteren);
+        sorterenlinks.setPadding(new Insets(4,0,0,0));
+        sorterenlinks.setMinWidth(150);
+
+        componentAZknop = new RadioButton("A-Z");
+        componentZAknop = new RadioButton("Z-A");
+        componentDatumLaagNaarHoogknop = new RadioButton("Eerste datum 1-31");
+        componentDatumHoogNaarLaagknop= new RadioButton("Laaste datum 31-1");
+
+        sorterenGroep = new ToggleGroup();
+        sorterenGroep.getToggles().addAll(
+                componentAZknop,
+                componentZAknop,
+                componentDatumLaagNaarHoogknop,
+                componentDatumHoogNaarLaagknop
+        );
+
+        HBox vierKnoppen = new HBox(
+                sorterenlinks,
+                componentAZknop,
+                componentZAknop,
+                componentDatumLaagNaarHoogknop,
+                componentDatumHoogNaarLaagknop
+        );
+        vierKnoppen.setSpacing(10);
+        vierKnoppen.setPadding(new Insets(0,0,10,0));
+//      VIER-KNOPPEN ---------------------------------------------------------------------------------------------------
 
 
 //      OPSLAAN-KNOP ---------------------------------------------------------------------------------------------------
@@ -106,12 +145,12 @@ public class ComponentView extends View {
 //      LIJST-COMPONENT ------------------------------------------------------------------------------------------------
         listViewComponent = new ListView<>();
         listViewComponent.setPrefWidth(605);
-        listViewComponent.setPrefHeight(200);
+        listViewComponent.setPrefHeight(168);
 
         GridPane lijstComponent = new GridPane();
         lijstComponent.getChildren().add(listViewComponent);
         lijstComponent.setPadding(new Insets(0,0,10,0));
-        lijstComponent.setPrefHeight(190);
+        lijstComponent.setPrefHeight(168);
 //      LIJST-COMPONENT ------------------------------------------------------------------------------------------------
 
 
@@ -149,6 +188,7 @@ public class ComponentView extends View {
                 selecteerBehuizing,
                 componentNaam,
                 garantieDatum,
+                vierKnoppen,
                 opslaanComponent,
                 lijstComponent,
                 drieKnoppen
@@ -160,6 +200,26 @@ public class ComponentView extends View {
 
 //      ALLES ----------------------------------------------------------------------------------------------------------
 
+    }
+
+    public RadioButton getComponentAZknop() {
+        return componentAZknop;
+    }
+
+    public RadioButton getComponentZAknop() {
+        return componentZAknop;
+    }
+
+    public RadioButton getComponentDatumLaagNaarHoogknop() {
+        return componentDatumLaagNaarHoogknop;
+    }
+
+    public RadioButton getComponentDatumHoogNaarLaagknop() {
+        return componentDatumHoogNaarLaagknop;
+    }
+
+    public ToggleGroup getSorterenGroep() {
+        return sorterenGroep;
     }
 
     public ComboBox<Behuizing> getBehuizingen() {

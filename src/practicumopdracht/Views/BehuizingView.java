@@ -5,6 +5,7 @@
 package practicumopdracht.Views;
 
 import javafx.scene.Parent;
+import javafx.scene.layout.BorderPane;
 import practicumopdracht.Models.Behuizing;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -14,6 +15,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class BehuizingView extends View {
+
+    private MenuItem oplopendMenuItem;
+    private MenuItem aflopendMenuItem;
+    private MenuItem opslaanMenuItem;
+    private MenuItem ladenMenuItem;
+    private MenuItem afsluitenMenuItem;
 
     private TextField hoogteBehuizingTextField;
     private TextField merkenTextField;
@@ -31,6 +38,29 @@ public class BehuizingView extends View {
     }
 
     private void screenView() {
+
+//      MENUBAR --------------------------------------------------------------------------------------------------------
+        MenuBar menuBarBovenAan = new MenuBar();
+        Menu bestandMenu = new Menu("Bestand");
+        opslaanMenuItem = new MenuItem("Opslaan");
+        ladenMenuItem = new MenuItem("Laden");
+        afsluitenMenuItem = new MenuItem("Afsluiten");
+
+        bestandMenu.getItems().addAll(
+                opslaanMenuItem,
+                ladenMenuItem,
+                new SeparatorMenuItem(),
+                afsluitenMenuItem);
+
+        Menu sorterenMenu = new Menu("Sorteren");
+        oplopendMenuItem = new MenuItem("Oplopend");
+        aflopendMenuItem = new MenuItem("Aflopend");
+
+        sorterenMenu.getItems().addAll(oplopendMenuItem, aflopendMenuItem);
+
+        menuBarBovenAan.getMenus().addAll(bestandMenu, sorterenMenu);
+//      MENUBAR --------------------------------------------------------------------------------------------------------
+
 
 //      MERK-BEHUIZING -------------------------------------------------------------------------------------------------
         Label merkLabel = new Label("Behuizing merk: ");
@@ -125,12 +155,12 @@ public class BehuizingView extends View {
 //      LISTVIEW -------------------------------------------------------------------------------------------------------
         listViewBehuizing = new ListView<>();
         listViewBehuizing.setPrefWidth(605);
-        listViewBehuizing.setPrefHeight(210);
+        listViewBehuizing.setPrefHeight(190);
 
         GridPane lijstBehuizing = new GridPane();
         lijstBehuizing.getChildren().add(listViewBehuizing);
         lijstBehuizing.setPadding(new Insets(0,0,10,0));
-        lijstBehuizing.setMinHeight(210);
+        lijstBehuizing.setPrefHeight(190);
 //      LISTVIEW -------------------------------------------------------------------------------------------------------
 
 
@@ -162,10 +192,13 @@ public class BehuizingView extends View {
 
 
 //      ALLES ----------------------------------------------------------------------------------------------------------
-        VBox behuizingAlles = new VBox();
-        behuizingAlles.setMinHeight(480);
-        behuizingAlles.setPadding(new Insets(10));
-        behuizingAlles.getChildren().addAll(
+        BorderPane menubarBovenAanBP = new BorderPane();
+        menubarBovenAanBP.setTop(menuBarBovenAan);
+
+        VBox behuizingAlles2 = new VBox();
+        behuizingAlles2.setMinHeight(480);
+        behuizingAlles2.setPadding(new Insets(10));
+        behuizingAlles2.getChildren().addAll(
                 merkBehuizing,
                 hoogteBehuizing,
                 serienummerBehuizing,
@@ -175,14 +208,42 @@ public class BehuizingView extends View {
                 drieKnoppen
         );
 
-        root = behuizingAlles;
+        VBox behuizingAlles3 = new VBox();
+        behuizingAlles3.getChildren().addAll(menubarBovenAanBP, behuizingAlles2);
+
+        root = behuizingAlles3;
 
 //      ALLES ----------------------------------------------------------------------------------------------------------
     }
 
-    public TextField getMerkenTextField() {
-        return merkenTextField;
+
+
+//      MENUBAR --------------------------------------------------------------------------------------------------------
+    public MenuItem getOpslaanMenuItem() {
+        return opslaanMenuItem;
     }
+
+    public MenuItem getLadenMenuItem() {
+        return ladenMenuItem;
+    }
+
+    public MenuItem getAfsluitenMenuItem() {
+        return afsluitenMenuItem;
+    }
+
+    public MenuItem getOplopendMenuItem() {
+        return oplopendMenuItem;
+    }
+
+    public MenuItem getAflopendMenuItem() {
+        return aflopendMenuItem;
+    }
+//      MENUBAR --------------------------------------------------------------------------------------------------------
+
+//      VIEW -----------------------------------------------------------------------------------------------------------
+    public TextField getMerkenTextField() {
+    return merkenTextField;
+}
 
     public TextField getHoogteBehuizingTextField() {
         return hoogteBehuizingTextField;
@@ -223,6 +284,7 @@ public class BehuizingView extends View {
     public Parent getRoot() {
         return root;
     }
+//      VIEW -----------------------------------------------------------------------------------------------------------
 
 }
 

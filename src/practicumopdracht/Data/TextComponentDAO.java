@@ -1,0 +1,78 @@
+package practicumopdracht.Data;
+
+import practicumopdracht.MainApplication;
+import practicumopdracht.Models.Behuizing;
+import practicumopdracht.Models.Component;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
+
+public class TextComponentDAO extends ComponentDAO {
+
+    static final String COMPONENT = "Component.txt";
+
+    @Override
+    public boolean save() {
+        File file = new File(COMPONENT);
+
+        try (PrintWriter printWriter = new PrintWriter(file)) {
+            printWriter.println(componenten.size());
+
+            for (Component component : componenten){
+                int behuizingId = MainApplication.getBehuizingDAO().getIdFor(component.getHoortbij());
+                printWriter.println(behuizingId);
+                printWriter.println(component.getNaam());
+                printWriter.println(component.getDatum());
+            }
+            return true;
+        }
+
+        catch (FileNotFoundException e) {
+            System.err.println(COMPONENT + " is niet gevonden!");
+        }
+
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean load() {
+        componenten.clear();
+        File file = new File(COMPONENT);
+
+        try(Scanner scanner = new Scanner(file)) {
+            int aantalComponenten = scanner.nextInt();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-mm-d");
+
+            for (int i = 0; i < aantalComponenten; i++) {
+                Behuizing behuizing = MainApplication.getBehuizingDAO().getById(scanner.nextInt());
+                scanner.nextLine();
+                String componentNaam = scanner.next();
+                scanner.nextLine();
+                LocalDate garantieDatum = LocalDate.parse(scanner.nextLine(), formatter);
+
+                Component component = new Component(behuizing, componentNaam, garantieDatum);
+                componenten.add(component);
+            }
+
+        }
+
+        catch (FileNotFoundException e) {
+            System.err.println(COMPONENT + " is niet gevonden!");
+        }
+
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+
+    }
+}

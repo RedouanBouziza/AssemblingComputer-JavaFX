@@ -34,7 +34,7 @@ public class Behuizing implements Serializable {
         return soort;
     }
 
-    public Double getHoogte() {
+    public double getHoogte() {
         return hoogte;
     }
 

@@ -1,11 +1,20 @@
+/**
+ * @Author: Redouan Bouziza IS205
+ * BehuizingController Class
+ */
 package practicumopdracht.Controllers;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import practicumopdracht.Comparators.BehuizingComparatorAZ;
 import practicumopdracht.MainApplication;
 import practicumopdracht.Models.Behuizing;
 import practicumopdracht.Views.BehuizingView;
 import practicumopdracht.Views.View;
+
+import java.util.List;
 
 public class BehuizingController extends Controller {
 
@@ -15,12 +24,123 @@ public class BehuizingController extends Controller {
 
         view = new BehuizingView();
 
+        view.getOpslaanMenuItem().setOnAction(actionEvent -> menuOpslaan());
+        view.getLadenMenuItem().setOnAction(actionEvent -> menuLaden());
+        view.getAfsluitenMenuItem().setOnAction(actionEvent -> menuAfsluiten());
+
+        view.getOplopendMenuItem().setOnAction(actionEvent -> menuOplopend());
+        view.getAflopendMenuItem().setOnAction(actionEvent -> menuAflopend());
+
         view.getOpslaanKnop().setOnAction(actionEvent -> viewOpslaan());
         view.getNieuwKnop().setOnAction(actionEvent -> viewNieuw());
         view.getVerwijderenKnop().setOnAction(e -> viewVerwijderen());
         view.getComponentToevoegenKnop().setOnAction(actionEvent -> viewSchakelaar());
 
+        List<Behuizing> behuizingen = MainApplication.getBehuizingDAO().getAll();
+        ObservableList<Behuizing> behuizingenObservableList = FXCollections.observableList(behuizingen);
+        view.getListViewBehuizing().setItems(behuizingenObservableList);
+
     }
+
+
+    private void menuOpslaan() {
+        ButtonType yes = new ButtonType("Ja");
+        ButtonType no = new ButtonType("Nee");
+        ButtonType oke = new ButtonType("Oke");
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.getButtonTypes().clear();
+        alert.getButtonTypes().addAll(yes, no);
+        alert.setTitle("U bent op het punt om op te slaan.");
+        alert.setHeaderText("Weet u zeker dat u wilt opslaan?");
+        alert.showAndWait();
+
+        if (alert.getResult() == yes) {
+            if (MainApplication.getBehuizingDAO().save() && MainApplication.getComponentDAO().save()) {
+                Alert alert2 = new Alert(Alert.AlertType.INFORMATION );
+                alert2.getButtonTypes().clear();
+                alert2.getButtonTypes().addAll(oke);
+                alert2.setTitle("Succesvol opgeslagen!");
+                alert2.setHeaderText("Het opslaan is gelukt.");
+                alert2.showAndWait();
+            } else {
+                Alert alert3 = new Alert(Alert.AlertType.ERROR);
+                alert3.getButtonTypes().clear();
+                alert3.getButtonTypes().addAll(oke);
+                alert3.setTitle("Opslaan mislukt!");
+                alert3.setHeaderText("Het opslaan is helaas mislukt.");
+                alert3.showAndWait();
+            }
+        }
+    }
+
+    private void menuLaden() {
+        ButtonType yes = new ButtonType("Ja");
+        ButtonType no = new ButtonType("Nee");
+        ButtonType oke = new ButtonType("Oke");
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.getButtonTypes().clear();
+        alert.getButtonTypes().addAll(yes, no);
+        alert.setTitle("U bent op het punt om te laden.");
+        alert.setHeaderText("Weet u zeker dat u wilt laden?");
+        alert.showAndWait();
+
+        if (alert.getResult() == yes) {
+            if (MainApplication.getBehuizingDAO().load()) {
+                Alert alert2 = new Alert(Alert.AlertType.INFORMATION );
+                alert2.getButtonTypes().clear();
+                alert2.getButtonTypes().addAll(oke);
+                alert2.setTitle("Succesvol geladen!");
+                alert2.setHeaderText("Het laden is gelukt.");
+                alert2.showAndWait();
+            } else {
+                Alert alert3 = new Alert(Alert.AlertType.ERROR);
+                alert3.getButtonTypes().clear();
+                alert3.getButtonTypes().addAll(oke);
+                alert3.setTitle("Laden mislukt!");
+                alert3.setHeaderText("Het laden is helaas mislukt.");
+                alert3.showAndWait();
+            }
+
+            List<Behuizing> behuizingen = MainApplication.getBehuizingDAO().getAll();
+            ObservableList<Behuizing> behuizingenObservableList = FXCollections.observableList(behuizingen);
+            view.getListViewBehuizing().setItems(behuizingenObservableList);
+        }
+    }
+
+    private void menuAfsluiten(){
+
+        ButtonType yes = new ButtonType("Ja");
+        ButtonType no = new ButtonType("Nee");
+        ButtonType oke = new ButtonType("Oke");
+        Alert alert = new Alert(Alert.AlertType.NONE);
+        alert.getButtonTypes().clear();
+        alert.getButtonTypes().addAll(yes, no);
+        alert.setTitle("U bent op het punt om af te sluiten.");
+        alert.setHeaderText("Weet u zeker dat u wilt afsluiten?");
+        alert.showAndWait();
+
+        if (alert.getResult() == yes) {
+            if (MainApplication.getBehuizingDAO().save()) {
+                Alert alert2 = new Alert(Alert.AlertType.INFORMATION );
+                alert2.getButtonTypes().clear();
+                alert2.getButtonTypes().addAll(oke);
+                alert2.setTitle("Succesvol opgeslagen!");
+                alert2.setHeaderText("Alle gegevens zijn opgeslagen op de achtergrond.");
+                alert2.showAndWait();
+            }
+        }
+        System.exit(0);
+    }
+
+    private void menuOplopend() {
+        FXCollections.sort(view.getListViewBehuizing().getItems(), new BehuizingComparatorAZ());
+    }
+
+    private void menuAflopend() {
+        FXCollections.sort(view.getListViewBehuizing().getItems(), new BehuizingComparatorAZ().reversed());
+    }
+
+//    ------------------------------------------------------------------------------------------------------------------
 
     private void viewOpslaan() {
 
@@ -114,6 +234,7 @@ public class BehuizingController extends Controller {
             clearFields();
         }
 
+        MainApplication.getBehuizingDAO().addOrUpdate(behuizing);
     }
 
     private void viewNieuw() {
@@ -145,7 +266,6 @@ public class BehuizingController extends Controller {
             alert.getButtonTypes().clear();
             alert.getButtonTypes().addAll(oke);
             alert.showAndWait();
-
             return;
         }
 
@@ -158,7 +278,7 @@ public class BehuizingController extends Controller {
 
         if (alert.getResult() == yes) {
             view.getListViewBehuizing().getItems().remove(behuizing);
-
+            MainApplication.getBehuizingDAO().remove(behuizing);
             clearFields();
         }
     }

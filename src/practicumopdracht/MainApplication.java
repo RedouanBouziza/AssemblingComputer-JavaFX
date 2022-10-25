@@ -5,11 +5,14 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import practicumopdracht.Controllers.BehuizingController;
 import practicumopdracht.Controllers.Controller;
+import practicumopdracht.Data.*;
 
 public class MainApplication extends Application {
 
     private final int WIDTH = 640;
     private final int HEIGHT = 480;
+    private static BehuizingDAO behuizingDAO;
+    private static ComponentDAO componentDAO;
     private static Stage stage;
 
     @Override
@@ -20,6 +23,16 @@ public class MainApplication extends Application {
         stage.setWidth(WIDTH);
         stage.setHeight(HEIGHT);
 
+//        behuizingDAO = new BehuizingDummyDAO();
+//        behuizingDAO = new TextBehuizingDAO();
+        behuizingDAO = new BinaryBehuizingDAO();
+//        componentDAO = new ComponentDummyDAO();
+//        componentDAO = new TextComponentDAO();
+        componentDAO = new ObjectComponentDAO();
+
+        behuizingDAO.load();
+        componentDAO.load();
+
         switchController(new BehuizingController());
     }
 
@@ -28,4 +41,11 @@ public class MainApplication extends Application {
         stage.show();
     }
 
+    public static BehuizingDAO getBehuizingDAO() {
+        return behuizingDAO;
+    }
+
+    public static ComponentDAO getComponentDAO() {
+        return componentDAO;
+    }
 }

@@ -1,22 +1,30 @@
+/**
+ * @Author: Redouan Bouziza IS205
+ * ComponentController Class
+ */
 package practicumopdracht.Controllers;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import practicumopdracht.Comparators.BehuizingComparatorAZ;
+import practicumopdracht.Comparators.ComponentComparatorAZ;
+import practicumopdracht.Comparators.ComponentComparatorDatum;
 import practicumopdracht.MainApplication;
 import practicumopdracht.Models.Behuizing;
 import practicumopdracht.Models.Component;
-import practicumopdracht.Views.BehuizingView;
 import practicumopdracht.Views.ComponentView;
 import practicumopdracht.Views.View;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class ComponentController extends Controller {
 
     private ComponentView view;
 
     public ComponentController(Behuizing behuizing) {
-
         view = new ComponentView();
 
         view.getOpslaanKnop().setOnAction(actionEvent -> viewOpslaan(behuizing));
@@ -24,7 +32,52 @@ public class ComponentController extends Controller {
         view.getVerwijderenKnop().setOnAction(e -> viewVerwijderen());
         view.getTerugKnop().setOnAction(actionEvent -> viewSchakelaar());
 
+        List<Component> componenten = MainApplication.getComponentDAO().getAllFor(behuizing);
+        ObservableList<Component> componentObservableList = FXCollections.observableList(componenten);
+        view.getListViewComponent().setItems(componentObservableList);
+
+        view.getListViewComponent().getSelectionModel().selectedItemProperty().addListener((observableValue,
+                                                                                            oudeComponent,
+                                                                                            nieuweComponent) -> {
+            if (nieuweComponent == null) {
+                return;
+            }
+            view.getComponentNaamTextField().setText(nieuweComponent.getNaam());
+            view.getDatumGarantieComponent().setValue(nieuweComponent.getDatum());
+        });
+
+        List<Behuizing> behuizingen = MainApplication.getBehuizingDAO().getAll();
+        ObservableList<Behuizing> behuizingenObservableList = FXCollections.observableList(behuizingen);
+        view.getBehuizingen().setItems(behuizingenObservableList);
         view.getBehuizingen().setValue(behuizing);
+        FXCollections.sort(view.getBehuizingen().getItems(), new BehuizingComparatorAZ());
+
+        view.getBehuizingen().getSelectionModel().selectedItemProperty().addListener(((observableValue, component1, component2) -> {
+            view.getComponentNaamTextField().clear();
+            view.getDatumGarantieComponent().setValue(null);
+
+            List<Component> nieuweComponenten = MainApplication.getComponentDAO().getAllFor(component2);
+            ObservableList<Component> nieuweComponentObservableList = FXCollections.observableList(nieuweComponenten);
+            view.getListViewComponent().setItems(nieuweComponentObservableList);
+        }));
+
+        view.getSorterenGroep().selectedToggleProperty().addListener((observableValue, toggle, toggleView) -> {
+
+            if (toggleView == view.getComponentAZknop()){
+                FXCollections.sort(view.getListViewComponent().getItems(), new ComponentComparatorAZ());
+                view.getListViewComponent().refresh();
+            } else if (toggleView == view.getComponentZAknop()){
+                FXCollections.sort(view.getListViewComponent().getItems(), new ComponentComparatorAZ().reversed());
+                view.getListViewComponent().refresh();
+            } else if (toggleView == view.getComponentDatumLaagNaarHoogknop()){
+                FXCollections.sort(view.getListViewComponent().getItems(), new ComponentComparatorDatum());
+                view.getListViewComponent().refresh();
+            } else if (toggleView == view.getComponentDatumHoogNaarLaagknop()){
+                FXCollections.sort(view.getListViewComponent().getItems(), new ComponentComparatorDatum().reversed());
+                view.getListViewComponent().refresh();
+            }
+        });
+
     }
 
     private void viewOpslaan(Behuizing behuizing) {
@@ -76,7 +129,7 @@ public class ComponentController extends Controller {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.getButtonTypes().clear();
             alert.getButtonTypes().addAll(oke);
-            alert.setContentText(behuizing.toString());
+            alert.setContentText(component.toString());
             alert.setTitle("Nieuwe component");
             alert.setHeaderText("Het is je gelukt om een nieuwe component toe te voegen.");
             alert.showAndWait();
@@ -86,6 +139,7 @@ public class ComponentController extends Controller {
             clearFields();
         }
 
+        MainApplication.getComponentDAO().addOrUpdate(component);
     }
 
     private void viewNieuw() {
@@ -117,7 +171,6 @@ public class ComponentController extends Controller {
             alert.getButtonTypes().clear();
             alert.getButtonTypes().addAll(oke);
             alert.showAndWait();
-
             return;
         }
 
@@ -130,7 +183,7 @@ public class ComponentController extends Controller {
 
         if (alert.getResult() == yes) {
             view.getListViewComponent().getItems().remove(component);
-
+            MainApplication.getComponentDAO().remove(component);
             clearFields();
         }
     }
