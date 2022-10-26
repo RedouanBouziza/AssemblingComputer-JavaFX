@@ -9,7 +9,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
-import practicumopdracht.Comparators.BehuizingComparatorAZ;
+import practicumopdracht.Comparators.BehuizingComparatoSerienummer;
 import practicumopdracht.MainApplication;
 import practicumopdracht.Models.Behuizing;
 import practicumopdracht.Views.BehuizingView;
@@ -21,6 +21,11 @@ public class BehuizingController extends Controller {
 
     private BehuizingView view;
 
+    /**
+     * Main Controller
+     * Die er voor zorgt dat alle knoppen doen wat ze moeten doen
+     * En de juiste data in de juiste velden zet
+     */
     public BehuizingController() {
 
         view = new BehuizingView();
@@ -40,10 +45,13 @@ public class BehuizingController extends Controller {
         List<Behuizing> behuizingen = MainApplication.getBehuizingDAO().getAll();
         ObservableList<Behuizing> behuizingenObservableList = FXCollections.observableList(behuizingen);
         view.getListViewBehuizing().setItems(behuizingenObservableList);
-        FXCollections.sort(view.getListViewBehuizing().getItems(), new BehuizingComparatorAZ());
+        FXCollections.sort(view.getListViewBehuizing().getItems(), new BehuizingComparatoSerienummer());
     }
 
-
+    /**
+     * Menu opslaan functie
+     * Opslaan van de data in de DAO
+     */
     private void menuOpslaan() {
         ButtonType yes = new ButtonType("Ja");
         ButtonType no = new ButtonType("Nee");
@@ -74,6 +82,10 @@ public class BehuizingController extends Controller {
         }
     }
 
+    /**
+     * Menu laden functie
+     * Laden van de data uit de DAO
+     */
     private void menuLaden() {
         ButtonType yes = new ButtonType("Ja");
         ButtonType no = new ButtonType("Nee");
@@ -102,6 +114,10 @@ public class BehuizingController extends Controller {
         }
     }
 
+    /**
+     * Menu afsluiten functie
+     * Afsluiten van de applicatie
+     */
     private void menuAfsluiten(){
 
         ButtonType yes = new ButtonType("Ja");
@@ -139,16 +155,30 @@ public class BehuizingController extends Controller {
         stage.close();
     }
 
+    /**
+     * Menu oplopend functie
+     * Zorgt ervoor dat de lijst oplopend gesorteerd wordt
+     */
     private void menuOplopend() {
-        FXCollections.sort(view.getListViewBehuizing().getItems(), new BehuizingComparatorAZ());
+        FXCollections.sort(view.getListViewBehuizing().getItems(), new BehuizingComparatoSerienummer());
     }
 
+    /**
+     * Menu aflopend functie
+     * Zorgt ervoor dat de lijst aflopend gesorteerd wordt
+     */
     private void menuAflopend() {
-        FXCollections.sort(view.getListViewBehuizing().getItems(), new BehuizingComparatorAZ().reversed());
+        FXCollections.sort(view.getListViewBehuizing().getItems(), new BehuizingComparatoSerienummer().reversed());
     }
 
 //    ------------------------------------------------------------------------------------------------------------------
 
+    /**
+     * View opslaan functie
+     * Opslaan van de data in de listview
+     * Validatie van de invoer
+     * En het opslaan van de data in de DAO door een addOrUpdate
+     */
     private void viewOpslaan() {
         String merkenTextField = view.getMerkenTextField().getText();
         String hoogteBehuizingTextField = view.getHoogteBehuizingTextField().getText();
@@ -198,7 +228,7 @@ public class BehuizingController extends Controller {
         if (!foutmelding.isEmpty()) {
             ButtonType oke = new ButtonType("Oke");
             Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Data onjuist!");
+            alert.setTitle("Opslaan");
             alert.setHeaderText("Je hebt de verkeerde data ingevuld");
             alert.getButtonTypes().clear();
             alert.getButtonTypes().addAll(oke);
@@ -231,7 +261,7 @@ public class BehuizingController extends Controller {
             alert.getButtonTypes().clear();
             alert.getButtonTypes().addAll(oke);
             alert.setContentText(behuizing.toString());
-            alert.setTitle("Nieuwe behuizing!");
+            alert.setTitle("Nieuw");
             alert.setHeaderText("Het is je gelukt om een nieuwe behuizing toe te voegen.");
             alert.showAndWait();
 
@@ -243,6 +273,10 @@ public class BehuizingController extends Controller {
         MainApplication.getBehuizingDAO().addOrUpdate(behuizing);
     }
 
+    /**
+     * View nieuw functie
+     * Zorgt ervoor dat de textFields leeg worden gemaakt
+     */
     private void viewNieuw() {
         ButtonType yes = new ButtonType("Ja");
         ButtonType no = new ButtonType("Nee");
@@ -250,7 +284,7 @@ public class BehuizingController extends Controller {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.getButtonTypes().clear();
         alert.getButtonTypes().addAll(yes, no);
-        alert.setTitle("Nieuwe velden!");
+        alert.setTitle("Nieuw");
         alert.setHeaderText("Weet je zeker dat je nieuwe velden wilt toevoegen?");
         alert.showAndWait();
 
@@ -259,6 +293,11 @@ public class BehuizingController extends Controller {
         }
     }
 
+    /**
+     * View verwijder functie
+     * Verwijderen van de data in de listview
+     * En het verwijderen van de data in de DAO
+     */
     private void viewVerwijderen() {
         Behuizing behuizing = view.getListViewBehuizing().getSelectionModel().getSelectedItem();
         ButtonType yes = new ButtonType("Ja");
@@ -267,7 +306,7 @@ public class BehuizingController extends Controller {
 
         if (behuizing == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Behuizing selecteren!");
+            alert.setTitle("Verwijderen");
             alert.setHeaderText("Je moet een behuizing selecteren.");
             alert.getButtonTypes().clear();
             alert.getButtonTypes().addAll(oke);
@@ -278,7 +317,7 @@ public class BehuizingController extends Controller {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.getButtonTypes().clear();
         alert.getButtonTypes().addAll(yes, no);
-        alert.setTitle("Behuizing verwijderen!");
+        alert.setTitle("Verwijderen");
         alert.setHeaderText("Weet je zeker dat je deze behuizing wilt verwijderen?");
         alert.showAndWait();
 
@@ -289,6 +328,10 @@ public class BehuizingController extends Controller {
         }
     }
 
+    /**
+     * View schakelaar functie
+     * Zorgt voor het schakelen van de stage
+     */
     private void viewSchakelaar() {
         Behuizing behuizing = view.getListViewBehuizing().getSelectionModel().getSelectedItem();
         ButtonType oke = new ButtonType("Oke");
@@ -296,7 +339,7 @@ public class BehuizingController extends Controller {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.getButtonTypes().clear();
             alert.getButtonTypes().addAll(oke);
-            alert.setTitle("Geen behuizing geselecteerd!");
+            alert.setTitle("Schakelen");
             alert.setHeaderText("Je moet een behuizing selecteren.");
             alert.showAndWait();
             return;
@@ -306,6 +349,10 @@ public class BehuizingController extends Controller {
         MainApplication.switchController(controller);
     }
 
+    /**
+     * Clear fields functie
+     * Maakt de velden leeg
+     */
     private void clearFields() {
         view.getMerkenTextField().clear();
         view.getHoogteBehuizingTextField().clear();

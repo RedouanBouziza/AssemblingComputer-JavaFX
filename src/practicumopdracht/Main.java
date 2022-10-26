@@ -1,3 +1,7 @@
+/**
+ * @Author: Redouan Bouziza IS205
+ * MainApplication Class
+ */
 package practicumopdracht;
 
 import javafx.application.Application;

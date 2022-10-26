@@ -1,3 +1,7 @@
+/**
+ * @Author: Redouan Bouziza IS205
+ * DAO Parent Class
+ */
 package practicumopdracht.Data;
 
 import java.util.List;

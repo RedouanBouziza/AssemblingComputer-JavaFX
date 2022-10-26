@@ -9,9 +9,16 @@ import practicumopdracht.Models.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Zorgt voor de opslag van componenten
+ */
 public abstract class ComponentDAO implements DAO<Component> {
     protected ArrayList<Component> componenten = new ArrayList<>();
 
+    /**
+     * Voegt een component toe aan de lijst
+     * @param object
+     */
     public List<Component> getAllFor(Behuizing object){
         List<Component> juisteComponent = new ArrayList<>();
 

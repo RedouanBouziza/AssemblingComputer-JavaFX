@@ -1,3 +1,7 @@
+/**
+ * @Author: Redouan Bouziza IS205
+ * TextBehuizingDAO Class
+ */
 package practicumopdracht.Data;
 
 import practicumopdracht.Models.Behuizing;
@@ -7,10 +11,16 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
+/**
+ * Zorgt voor het opslaan en laden van behuizingen in een text bestand
+ */
 public class TextBehuizingDAO extends BehuizingDAO {
 
     static final String BEHUIZING = "Behuizingen.txt";
 
+    /**
+     * Saved the behuizingen to a text file
+     */
     @Override
     public boolean save() {
         File file = new File(BEHUIZING);
@@ -39,6 +49,9 @@ public class TextBehuizingDAO extends BehuizingDAO {
         return false;
     }
 
+    /**
+     * Loads the behuizingen from a text file
+     */
     @Override
     public boolean load() {
         behuizingen.clear();

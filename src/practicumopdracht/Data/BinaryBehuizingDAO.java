@@ -1,13 +1,23 @@
+/**
+ * @Author: Redouan Bouziza IS205
+ * BinaryBehuizingDAO Class
+ */
 package practicumopdracht.Data;
 
 import practicumopdracht.Models.Behuizing;
 
 import java.io.*;
 
+/**
+ * Zorgt voor het opslaan en laden van behuizingen in een binary bestand
+ */
 public class BinaryBehuizingDAO extends BehuizingDAO {
 
 //    static final String BINARY_BEHUIZING = "Behuizing.bn";
 
+    /**
+     * Saved the behuizingen to a binary file
+     */
     @Override
     public boolean save() {
         File file = new File("Behuizing.bin");
@@ -30,9 +40,12 @@ public class BinaryBehuizingDAO extends BehuizingDAO {
         return true;
     }
 
+    /**
+     * Loads the behuizingen from a binary file
+     */
     @Override
     public boolean load() {
-//        behuizingen.clear();
+        behuizingen.clear();
         File file = new File("Behuizing.bin");
 
         try (
@@ -51,7 +64,7 @@ public class BinaryBehuizingDAO extends BehuizingDAO {
                 behuizingen.add(behuizing);
             }
 
-//            return true;
+            return true;
         }
         catch (FileNotFoundException e) {
             System.err.println("bestand is niet gevonden!");

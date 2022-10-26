@@ -9,7 +9,6 @@ import java.time.LocalDate;
 
 public class Component implements Serializable {
 
-    //    Attributen
     private transient Behuizing hoortbij;
     private String naam;
     private LocalDate datum;
@@ -26,7 +25,6 @@ public class Component implements Serializable {
         this.datum = datum;
     }
 
-    //   Getters and Setters
     public Behuizing getHoortbij() {
         return hoortbij;
     }
@@ -53,7 +51,6 @@ public class Component implements Serializable {
 
     /**
      * To string methode
-     *
      * @return toString
      */
     public String toString() {

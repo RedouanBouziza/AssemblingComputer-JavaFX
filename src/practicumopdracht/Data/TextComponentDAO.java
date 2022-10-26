@@ -1,3 +1,7 @@
+/**
+ * @Author: Redouan Bouziza IS205
+ * TextComponentDAO Class
+ */
 package practicumopdracht.Data;
 
 import practicumopdracht.MainApplication;
@@ -11,10 +15,16 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
+/**
+ * Zorgt voor het opslaan en laden van behuizingen in een text bestand
+ */
 public class TextComponentDAO extends ComponentDAO {
 
     static final String COMPONENT = "Component.txt";
 
+    /**
+     * Saved the component to a text file
+     */
     @Override
     public boolean save() {
         File file = new File(COMPONENT);
@@ -42,6 +52,9 @@ public class TextComponentDAO extends ComponentDAO {
         return false;
     }
 
+    /**
+     * Loads the component from a text file
+     */
     @Override
     public boolean load() {
         componenten.clear();

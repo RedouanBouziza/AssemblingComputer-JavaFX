@@ -1,3 +1,7 @@
+/**
+ * @Author: Redouan Bouziza IS205
+ * BehuizingDummyDAO Class
+ */
 package practicumopdracht.Data;
 
 import practicumopdracht.Models.Behuizing;

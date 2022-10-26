@@ -1,3 +1,7 @@
+/**
+ * @Author: Redouan Bouziza IS205
+ * MainApplication Class
+ */
 package practicumopdracht;
 
 import javafx.application.Application;
@@ -16,6 +20,10 @@ public class MainApplication extends Application {
     private static ComponentDAO componentDAO;
     private static Stage stage;
 
+    /**
+     * Start de applicatie
+     * @param stage
+     */
     @Override
     public void start(Stage stage) {
         MainApplication.stage = stage;
@@ -37,15 +45,27 @@ public class MainApplication extends Application {
         switchController(new BehuizingController());
     }
 
+    /**
+     * Schakel tussen de verschillende controllers
+     * @param controller
+     */
     public static void switchController(Controller controller) {
         stage.setScene(new Scene(controller.getView().getRoot()));
         stage.show();
     }
 
+    /**
+     * Geeft de behuizing DAO terug
+     * @return behuizingDAO
+     */
     public static BehuizingDAO getBehuizingDAO() {
         return behuizingDAO;
     }
 
+    /**
+     * Geeft de component DAO terug
+     * @return componentDAO
+     */
     public static ComponentDAO getComponentDAO() {
         return componentDAO;
     }

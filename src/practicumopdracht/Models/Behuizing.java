@@ -8,7 +8,6 @@ import java.io.Serializable;
 
 public class Behuizing implements Serializable {
 
-    //    Attributen
     private String soort;
     private double hoogte;
     private int serieNummer;
@@ -16,7 +15,6 @@ public class Behuizing implements Serializable {
 
     /**
      * Constructor for Behuizing
-     *
      * @param soort
      * @param hoogte
      * @param serieNummer
@@ -29,7 +27,6 @@ public class Behuizing implements Serializable {
         this.behuizingHeeftTemperedGlass = behuizingHeeftTemperedGlass;
     }
 
-    //   Getters and Setters
     public String getSoort() {
         return soort;
     }
@@ -64,7 +61,6 @@ public class Behuizing implements Serializable {
 
     /**
      * To string methode
-     *
      * @return toString
      */
     public String toString() {

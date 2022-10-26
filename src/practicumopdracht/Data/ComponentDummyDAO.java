@@ -1,3 +1,7 @@
+/**
+ * @Author: Redouan Bouziza IS205
+ * ComponentDummyDAO Class
+ */
 package practicumopdracht.Data;
 
 import practicumopdracht.MainApplication;

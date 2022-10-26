@@ -8,6 +8,9 @@ import practicumopdracht.Models.Behuizing;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Zorgt voor de opslag van behuizingen
+ */
 public abstract class BehuizingDAO implements DAO<Behuizing> {
     protected ArrayList<Behuizing> behuizingen = new ArrayList<>();
 

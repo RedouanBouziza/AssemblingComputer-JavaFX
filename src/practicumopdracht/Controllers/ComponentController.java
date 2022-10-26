@@ -8,7 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import practicumopdracht.Comparators.BehuizingComparatorAZ;
+import practicumopdracht.Comparators.BehuizingComparatoSerienummer;
 import practicumopdracht.Comparators.ComponentComparatorAZ;
 import practicumopdracht.Comparators.ComponentComparatorDatum;
 import practicumopdracht.MainApplication;
@@ -24,6 +24,11 @@ public class ComponentController extends Controller {
 
     private ComponentView view;
 
+    /**
+     * Main Controller
+     * Die er voor zorgt dat alle knoppen doen wat ze moeten doen
+     * En de juiste data in de juiste velden zet
+     */
     public ComponentController(Behuizing behuizing) {
         view = new ComponentView();
 
@@ -46,11 +51,13 @@ public class ComponentController extends Controller {
             view.getDatumGarantieComponent().setValue(nieuweComponent.getDatum());
         });
 
+        // ComboBox
         List<Behuizing> behuizingen = MainApplication.getBehuizingDAO().getAll();
         ObservableList<Behuizing> behuizingenObservableList = FXCollections.observableList(behuizingen);
         view.getBehuizingen().setItems(behuizingenObservableList);
         view.getBehuizingen().setValue(behuizing);
-        FXCollections.sort(view.getBehuizingen().getItems(), new BehuizingComparatorAZ());
+        // Sorteren op serienummer
+        FXCollections.sort(view.getBehuizingen().getItems(), new BehuizingComparatoSerienummer());
 
         view.getBehuizingen().getSelectionModel().selectedItemProperty().addListener(((observableValue, component1, component2) -> {
             view.getComponentNaamTextField().clear();
@@ -61,6 +68,7 @@ public class ComponentController extends Controller {
             view.getListViewComponent().setItems(nieuweComponentObservableList);
         }));
 
+        // RadioButtons
         view.getSorterenGroep().selectedToggleProperty().addListener((observableValue, toggle, toggleView) -> {
 
             if (toggleView == view.getComponentAZknop()){
@@ -80,6 +88,12 @@ public class ComponentController extends Controller {
 
     }
 
+    /**
+     * View opslaan functie
+     * Opslaan van de data in de DAO door een addOrUpdate
+     * Zorgt ervoor dat de data in Detail word opgeslagen
+     * @param behuizing
+     */
     private void viewOpslaan(Behuizing behuizing) {
 
         String componentNaam = view.getComponentNaamTextField().getText();
@@ -102,7 +116,7 @@ public class ComponentController extends Controller {
         if (!foutmelding.isEmpty()) {
             ButtonType oke = new ButtonType("Oke");
             Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Data onjuist!");
+            alert.setTitle("Opslaan");
             alert.setHeaderText("Je hebt de verkeerde data ingevuld");
             alert.getButtonTypes().clear();
             alert.getButtonTypes().addAll(oke);
@@ -130,7 +144,7 @@ public class ComponentController extends Controller {
             alert.getButtonTypes().clear();
             alert.getButtonTypes().addAll(oke);
             alert.setContentText(component.toString());
-            alert.setTitle("Nieuwe component");
+            alert.setTitle("Opslaan");
             alert.setHeaderText("Het is je gelukt om een nieuwe component toe te voegen.");
             alert.showAndWait();
 
@@ -142,6 +156,10 @@ public class ComponentController extends Controller {
         MainApplication.getComponentDAO().addOrUpdate(component);
     }
 
+    /**
+     * View nieuw functie
+     * Zorgt ervoor dat velden worden leeggemaakt
+     */
     private void viewNieuw() {
         ButtonType yes = new ButtonType("Ja");
         ButtonType no = new ButtonType("Nee");
@@ -149,7 +167,7 @@ public class ComponentController extends Controller {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.getButtonTypes().clear();
         alert.getButtonTypes().addAll(yes, no);
-        alert.setTitle("Nieuwe velden");
+        alert.setTitle("Nieuw");
         alert.setHeaderText("Weet je zeker dat je nieuwe velden wilt toevoegen?");
         alert.showAndWait();
 
@@ -158,6 +176,11 @@ public class ComponentController extends Controller {
         }
     }
 
+    /**
+     * View verwijder functie
+     * Verwijderen van de data in de listview
+     * En het verwijderen van de data in de DAO
+     */
     private void viewVerwijderen() {
         Component component = view.getListViewComponent().getSelectionModel().getSelectedItem();
         ButtonType yes = new ButtonType("Ja");
@@ -166,7 +189,7 @@ public class ComponentController extends Controller {
 
         if (component == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Component selecteren!");
+            alert.setTitle("Verwijderen");
             alert.setHeaderText("Je moet een component selecteren.");
             alert.getButtonTypes().clear();
             alert.getButtonTypes().addAll(oke);
@@ -177,7 +200,7 @@ public class ComponentController extends Controller {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.getButtonTypes().clear();
         alert.getButtonTypes().addAll(yes, no);
-        alert.setTitle("component verwijderen!");
+        alert.setTitle("Verwijderen");
         alert.setHeaderText("Weet je zeker dat je deze component wilt verwijderen?");
         alert.showAndWait();
 
@@ -188,10 +211,18 @@ public class ComponentController extends Controller {
         }
     }
 
+    /**
+     * Schakelaar
+     * Het schakelen tussen de views
+     */
     private void viewSchakelaar() {
         MainApplication.switchController(new BehuizingController());
     }
 
+    /**
+     * Clear fields functie
+     * Maakt de velden leeg
+     */
     private void clearFields() {
         view.getComponentNaamTextField().clear();
         view.getDatumGarantieComponent().setValue(null);
