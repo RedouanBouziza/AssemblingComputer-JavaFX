@@ -56,8 +56,6 @@ public class ComponentController extends Controller {
         ObservableList<Behuizing> behuizingenObservableList = FXCollections.observableList(behuizingen);
         view.getBehuizingen().setItems(behuizingenObservableList);
         view.getBehuizingen().setValue(behuizing);
-        // Sorteren op serienummer
-        FXCollections.sort(view.getBehuizingen().getItems(), new BehuizingComparatoSerienummer());
 
         view.getBehuizingen().getSelectionModel().selectedItemProperty().addListener(((observableValue, component1, component2) -> {
             view.getComponentNaamTextField().clear();
@@ -138,7 +136,7 @@ public class ComponentController extends Controller {
         } else {
             view.getComponentNaamTextField().setStyle("-fx-border-color: none");
             view.getDatumGarantieComponent().setStyle("-fx-border-color: none");
-            component = new Component(behuizing, componentNaam, datumGarantie);
+            component = new Component(view.getBehuizingen().getSelectionModel().getSelectedItem(), componentNaam, datumGarantie);
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.getButtonTypes().clear();
