@@ -42,6 +42,19 @@ public class BehuizingController extends Controller {
         view.getVerwijderenKnop().setOnAction(e -> viewVerwijderen());
         view.getComponentToevoegenKnop().setOnAction(actionEvent -> viewSchakelaar());
 
+        view.getListViewBehuizing().getSelectionModel().selectedItemProperty().addListener((observableValue,
+                                                                                            oudeBehuizing,
+                                                                                            nieuweBehuizing) -> {
+            if (nieuweBehuizing == null) {
+                return;
+            }
+            view.getMerkenTextField().setText(nieuweBehuizing.getSoort());
+            view.getHoogteBehuizingTextField().setText(String.valueOf(nieuweBehuizing.getHoogte()));
+            view.getSerienummerBehuizingText().setText(String.valueOf(nieuweBehuizing.getSerieNummer()));
+            view.getTemperedGlassBehuizingCheckbox().setSelected(nieuweBehuizing.heeftBehuizingTemperedGlass());
+        });
+
+        // Combobox
         List<Behuizing> behuizingen = MainApplication.getBehuizingDAO().getAll();
         ObservableList<Behuizing> behuizingenObservableList = FXCollections.observableList(behuizingen);
         view.getListViewBehuizing().setItems(behuizingenObservableList);
