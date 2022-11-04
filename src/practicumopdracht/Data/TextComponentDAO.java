@@ -62,19 +62,19 @@ public class TextComponentDAO extends ComponentDAO {
 
         try(Scanner scanner = new Scanner(file)) {
             int aantalComponenten = scanner.nextInt();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-mm-d");
 
             for (int i = 0; i < aantalComponenten; i++) {
                 Behuizing behuizing = MainApplication.getBehuizingDAO().getById(scanner.nextInt());
                 scanner.nextLine();
                 String componentNaam = scanner.next();
                 scanner.nextLine();
-                LocalDate garantieDatum = LocalDate.parse(scanner.nextLine(), formatter);
+                LocalDate garantieDatum = LocalDate.parse(scanner.next());
 
                 Component component = new Component(behuizing, componentNaam, garantieDatum);
                 componenten.add(component);
             }
 
+            return true;
         }
 
         catch (FileNotFoundException e) {

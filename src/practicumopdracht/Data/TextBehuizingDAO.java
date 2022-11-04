@@ -62,11 +62,8 @@ public class TextBehuizingDAO extends BehuizingDAO {
 
             for(int i = 0; i < aantalBehuizingen; i++) {
                 String soort = scanner.next();
-                scanner.nextLine();
-                double hoogte = scanner.nextDouble();
-                scanner.nextLine();
+                double hoogte = Double.parseDouble(scanner.next());
                 int serieNummer = scanner.nextInt();
-                scanner.nextLine();
                 boolean temperedGlass = scanner.nextBoolean();
 
                 Behuizing behuizing = new Behuizing(soort, hoogte, serieNummer, temperedGlass);
